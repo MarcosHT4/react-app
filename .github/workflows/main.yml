@@ -4,7 +4,7 @@ on:
     branches:
       - master   
 jobs:
-  test:
+  test_jest:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout git
@@ -16,11 +16,15 @@ jobs:
       - name: Pruebas
         run: |
           npm run test 
+  test_cypress:
+    runs_on: ubuntu-latest
+    steps:      
       - name: Cypress Test
         run: |
           echo "Hola"    
-  build:
+  build_artifact:
     runs-on: ubuntu-20.04
+    needs: [test-jest, test-cypress]
     steps:
       - name: Checkout git
         uses: actions/checkout@v4
@@ -33,6 +37,10 @@ jobs:
         with:
           name: Build
           path: build
+  build_docker_image_and_push_to_docker_hub:
+    runs-on: ubuntu-20.04 
+    needs: [test-jest, test-cypress]     
+    steps: 
       - name: QEMU
         uses: docker/setup-qemu-action@v3
 
