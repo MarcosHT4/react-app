@@ -28,3 +28,8 @@ jobs:
         run: |
           npm install
           npm run build
+      - name: Subir artefacto
+        uses: actions/upload-artifact@v3
+        with:
+          name: Build
+          path: build    
