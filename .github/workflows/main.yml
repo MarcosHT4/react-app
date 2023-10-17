@@ -17,7 +17,7 @@ jobs:
         run: |
           npm run test 
   test_cypress:
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:      
       - name: Cypress Test
         run: |
