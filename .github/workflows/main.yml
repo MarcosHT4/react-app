@@ -24,7 +24,7 @@ jobs:
           echo "Hola"    
   build_artifact:
     runs-on: ubuntu-20.04
-    needs: [test-jest, test-cypress]
+    needs: [test_jest, test_cypress]
     steps:
       - name: Checkout git
         uses: actions/checkout@v4
@@ -39,7 +39,7 @@ jobs:
           path: build
   build_docker_image_and_push_to_docker_hub:
     runs-on: ubuntu-20.04 
-    needs: [test-jest, test-cypress]     
+    needs: [test_jest, test_cypress]     
     steps: 
       - name: QEMU
         uses: docker/setup-qemu-action@v3
