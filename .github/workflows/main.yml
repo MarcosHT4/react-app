@@ -3,7 +3,10 @@ on:
   push:
     branches:
       - master
+      - 'feature/**'
   pull_request:     
+env:
+  variable: "Hola"  
 jobs:
   test_jest:
     runs-on: ubuntu-latest
@@ -22,7 +25,10 @@ jobs:
     steps:      
       - name: Cypress Test
         run: |
-          echo "Hola"    
+          echo "Hola"   
+          echo ${{ vars.EXAMPLE }} 
+          echo $variable
+          exit 0
   build_artifact:
     runs-on: ubuntu-20.04
     needs: [test_jest, test_cypress]
