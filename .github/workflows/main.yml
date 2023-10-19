@@ -24,10 +24,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:      
       - name: Cypress Test
+        env:
+          variable_mundo: "Hola Mundo"
         run: |
           echo "Hola"   
           echo ${{ vars.EXAMPLE }} 
           echo $variable
+          echo $variable_mundo
+          echo $GITHUB_REF
           exit 0
   build_artifact:
     runs-on: ubuntu-20.04
