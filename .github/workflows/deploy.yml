@@ -4,7 +4,6 @@ on:
 jobs:
   deploy_into_dev_server:
     runs-on: ubuntu-20.04
-    needs: [build_docker_image_and_push_to_docker_hub]
     if: github.ref == 'refs/heads/master'
     steps:
       - name: Login and commands
