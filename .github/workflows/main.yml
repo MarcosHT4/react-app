@@ -2,7 +2,11 @@ name: Continous Integration
 on:
   push:
     branches:
-      - master   
+      - master
+      - 'feature/**'
+  pull_request:     
+env:
+  variable: "Hola"  
 jobs:
   test_jest:
     runs-on: ubuntu-latest
@@ -20,11 +24,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:      
       - name: Cypress Test
+        env:
+          variable_mundo: "Hola Mundo"
         run: |
-          echo "Hola"    
+          echo "Hola"   
+          echo ${{ vars.EXAMPLE }} 
+          echo $variable
+          echo $variable_mundo
+          echo $GITHUB_REF
+          exit 0
   build_artifact:
     runs-on: ubuntu-20.04
     needs: [test_jest, test_cypress]
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout git
         uses: actions/checkout@v4
@@ -39,7 +51,8 @@ jobs:
           path: build
   build_docker_image_and_push_to_docker_hub:
     runs-on: ubuntu-20.04 
-    needs: [test_jest, test_cypress]     
+    needs: [test_jest, test_cypress]   
+    if: github.ref == 'refs/heads/master'  
     steps: 
       - name: QEMU
         uses: docker/setup-qemu-action@v3
