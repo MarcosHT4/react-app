@@ -33,6 +33,18 @@ jobs:
           echo $variable_mundo
           echo $GITHUB_REF
           exit 0
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}        
   build_artifact:
     runs-on: ubuntu-20.04
     needs: [test_jest, test_cypress]
@@ -71,17 +83,3 @@ jobs:
         with:
           push: true
           tags: marcosht4/react-app:latest
-  deploy_into_dev_server:
-    runs-on: ubuntu-20.04
-    needs: [build_docker_image_and_push_to_docker_hub]
-    if: github.ref == 'refs/heads/master'
-    steps:
-      - name: Login and commands
-        uses: appleboy/ssh-action@master
-        with:
-          host: http://34.228.78.13
-          username: ec2-user
-          key: ${{ secrets.REACT_SERVER_PRIVATE_KEY }}
-          script: |
-            sudo docker stop REACT_SERVICE
-            sudo docker run -d -p 8080:80 REACT_SERVICE marcosht4/react-app:latest  
