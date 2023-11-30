@@ -1,8 +1,6 @@
 name: Deploy to environment
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "58 13 * * *"
 jobs:
   deploy_into_dev_server:
     runs-on: ubuntu-20.04
